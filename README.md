@@ -10,7 +10,7 @@ detected source says what it is, how sure the model is, and where each value cam
 PNG of every classified galaxy.
 
 The full method and results are in the
-[project report](report/Pixels2Provenance_Project_Report_31Oct_FINAL.docx). The history of every change is in
+[project report](report/Pixels2Provenance_Project_Report_31Oct_FINAL_v2.docx). The history of every change is in
 [`DEVELOPMENT_LOG.md`](DEVELOPMENT_LOG.md).
 
 ---
@@ -83,7 +83,7 @@ Section 14 of the report gives the full discussion.
 ## Setup
 
 ```bash
-git clone https://github.com/Sangeet516a-nus/pixels2provenance.git
+git clone https://github.com/Sangeet516a/pixels2provenance.git
 ```
 
 ```bash
