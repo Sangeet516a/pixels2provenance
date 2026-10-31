@@ -3,12 +3,12 @@
     galaxy cutout (128 x 128, 3 bands) -> cosmic rays cleaned, neighbours masked, cropped to ~4 Petrosian radii
         -> ImageNet input (R, G, B = F775W, F606W, F435W; asinh; 224 x 224); features averaged over 4 rotations
         -> ResNet-18 (ImageNet, frozen)        -> 512 features      \
-        -> EfficientNet-B0 (ImageNet, frozen)  -> 1,280 features     >  ENSEMBLE (fusion): one 1,806-feature vector,
-    + 14 physical features (Pass 2)            -> 14 features       /   block weights w1, w2, w3
-        -> PCA of each CNN block (fitted inside each CV fold; 32 + 32 components) + 14 physical
+        -> EfficientNet-B0 (ImageNet, frozen)  -> 1,280 features     >  ENSEMBLE (fusion): one 1,810-feature vector,
+    + 18 physical features (Pass 2)            -> 18 features       /   block weights w1, w2, w3
+        -> PCA of each CNN block (fitted inside each CV fold; 32 + 32 components) + 18 physical
         -> XGBoost (5 morphology classes)  +  XGBoost (merger yes / no)
-    FINAL morphology model (Stage 4b): equal-weight average of supervised.ensemble_members (default: fine-tuned
-    ResNet-18 + fine-tuned EfficientNet-B0 [p2p/finetune.py] + XGBoost on the 14 physical features)
+    FINAL morphology model (Stage 4b): equal-weight average of supervised.ensemble_members (fine-tuned ResNet-18 +
+    fine-tuned EfficientNet-B0 [p2p/finetune.py] + XGBoost on the 18 physical features + the fusion XGBoost above)
         -> calibration (Stage 4c)
 
 Used by Stages 4a (feature extraction), 4b (training), 4c, 4d, 6a, 6c, 7b and 8.
@@ -85,7 +85,7 @@ def feature_names(blocks, physical):
 
 
 def raw_blocks(n_physical):
-    """Column ranges of the 1,806-feature fusion matrix (before PCA)."""
+    """Column ranges of the 1,810-feature fusion matrix (before PCA)."""
     return {"resnet18": (0, 512), "efficientnet_b0": (512, 1792), "physical": (1792, 1792 + n_physical)}
 
 
@@ -150,7 +150,7 @@ class BlockPCA:
 
 
 def fusion_matrix(ctx: Ctx, df, physical):
-    """The 1,806-feature vector of every row of df: CNN features from Stage 4a + the physical columns."""
+    """The 1,810-feature vector of every row of df: CNN features from Stage 4a + the physical columns."""
     ids = np.load(ctx.require("4a", "object_id.npy"))
     F = np.load(ctx.require("4a", "cnn_features.npy"), mmap_mode="r")
     pos = {int(o): i for i, o in enumerate(ids)}

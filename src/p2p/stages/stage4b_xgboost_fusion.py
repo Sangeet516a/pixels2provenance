@@ -1,10 +1,10 @@
 """Stage 4b - the supervised ensemble: feature-level fusion XGBoost, physical XGBoost and fine-tuned CNNs.
 
-Final model (supervised.ensemble_members, default resnet18_ft + efficientnet_b0_ft + xgb_physical): the EQUAL-WEIGHT
+Final model (supervised.ensemble_members: resnet18_ft + efficientnet_b0_ft + xgb_physical + xgb_fusion): the EQUAL-WEIGHT
 average of the members' class probabilities (no weight is fitted, so nothing is tuned on the held-out folds),
 calibrated in Stage 4c. Members, all cross-validated on the same 5 folds:
-  xgb_fusion        : XGBoost on frozen CNN features (PCA) + 14 physical features (below)
-  xgb_physical      : XGBoost on the 14 physical features alone
+  xgb_fusion        : XGBoost on frozen CNN features (PCA) + 18 physical features (below)
+  xgb_physical      : XGBoost on the 18 physical features alone
   resnet18_ft       : ResNet-18, ImageNet weights, last two stages fine-tuned on the galaxies (p2p/finetune.py)
   efficientnet_b0_ft: EfficientNet-B0, likewise
 Why (30 Oct, same galaxies and folds): frozen fusion 0.466 Macro-F1; average of the fine-tuned CNNs and the physical
@@ -13,12 +13,12 @@ members make different mistakes, which an average exploits.
 
 Feature-level fusion XGBoost (member xgb_fusion; also the source of the merger model and the SHAP of Stage 6c):
 
-Ensemble: every labelled galaxy becomes ONE vector of 1,806 features =
+Ensemble: every labelled galaxy becomes ONE vector of 1,810 features =
               ResNet-18 (512) + EfficientNet-B0 (1,280)   [Stage 4a, frozen ImageNet CNNs]
-            + 14 physical features (Gini, M20, concentration, asymmetry, colours, ... ; Pass 2, Stage 5b).
+            + 18 physical features (Gini, M20, concentration, asymmetry, colours, ... ; Pass 2, Stage 5b).
           PCA: each CNN block is reduced to supervised.cnn_pca_components (32) principal components, fitted on the
           training fold only inside every CV fold (and on all pooled galaxies for the final model, cnn_pca.joblib):
-          ~1,100 labelled galaxies cannot support 1,792 noisy, correlated CNN columns, and with the reduced blocks
+          ~3,200 labelled galaxies cannot support 1,792 noisy, correlated CNN columns, and with the reduced blocks
           the ensemble weights really decide which block each tree draws from.
           Ensemble weights w1 (ResNet-18), w2 (EfficientNet-B0), w3 (physical): the share of the features each
           tree may draw from each block (XGBoost feature_weights; scaling the features themselves would not
@@ -32,7 +32,7 @@ XGBoost : "compile" in supervised.xgboost: softmax over the 5 GZH classes (multi
 Fit     : 5-fold cross-validation on the pooled TRAIN + DEV galaxies (grouped by 30" sky cell); the number of
           trees is chosen by the lowest out-of-fold log-loss; the final model is trained on all pooled galaxies.
           Keras-style history per boosting round (loss / val_loss / accuracy / val_accuracy).
-Merger  : a second XGBoost (merger yes / no, logistic) on the same 1,806 features and ensemble weights.
+Merger  : a second XGBoost (merger yes / no, logistic) on the same 1,810 features and ensemble weights.
 Output  : xgb_morphology.joblib (fusion), xgb_physical.joblib, finetuned_<network>.pt, finetuned_probs.npz,
           xgb_merger.joblib, fusion_meta.json, model_summary.txt, weight_search.png / .csv,
           training_history_xgboost.png / .json, training_history_<network>.png / .json, ensemble_members.csv,

@@ -105,7 +105,7 @@ def imagenet_input(cubes, size=224, q_lo=1.0, q_hi=99.5, soft=0.1):
 
 
 def physical_matrix(df, columns):
-    """The 14 physical (Pass-2) features as they are: trees need no scaling, and NaN (not measurable) is
+    """The physical (Pass-2) features of `columns` (18 in the final model) as they are: trees need no scaling, and NaN (not measurable) is
     handled natively by XGBoost."""
     return df.reindex(columns=list(columns)).apply(pd.to_numeric, errors="coerce").to_numpy(np.float32)
 

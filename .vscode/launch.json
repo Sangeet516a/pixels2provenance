@@ -34,26 +34,6 @@
       "console": "integratedTerminal"
     },
     {
-      "name": "P2P DEMO: make synthetic data",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/tools/make_demo_data.py",
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal"
-    },
-    {
-      "name": "P2P DEMO: run full pipeline on synthetic data",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/run_pipeline.py",
-      "args": [
-        "--config",
-        "config_demo.yaml"
-      ],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal"
-    },
-    {
       "name": "Tool: explain a stage (purpose, files, numbers)",
       "type": "debugpy",
       "request": "launch",
@@ -116,7 +96,8 @@
         "7a",
         "7b",
         "7c",
-        "8"
+        "8",
+        "9"
       ]
     },
     {

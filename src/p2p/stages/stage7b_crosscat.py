@@ -8,7 +8,7 @@ Method  : (1) CANDELS: every Phase-7 galaxy (all scored splits, Stage 7a) with a
               overall and per split. Galaxies in the GZH overlap (used for the ceiling) and expert point sources
               are excluded.
           (2) External GZH score - only when evaluation.seal_external is false: the GZH-labelled galaxies of the
-              external pointings (external stripes of GOODS-S, GOODS-S-4, GOODS-N-2, GOODS-N-4) are scored like the Stage 6a test
+              external pointings (GOODS-N-7 and the external stripes of GOODS-S, GOODS-N-2, GOODS-N-4) are scored like the Stage 6a test
               (Macro-F1 + 95 % CI, accuracy, balanced accuracy, ECE, per class, per pointing): same labels, new sky.
 Output  : crosscat_predictions.csv, cross_catalogue_metrics.json; external_gzh_predictions.csv,
           external_gzh_metrics.json, confusion_matrix_external.png (when unsealed)

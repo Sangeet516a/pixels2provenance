@@ -104,6 +104,13 @@ On Windows, use `.venv\Scripts\activate` instead.
 pip install -r requirements.txt
 ```
 
+`requirements-lock.txt` lists the exact versions used for the final run. Use it instead if you load the saved models,
+which can depend on those versions (Python 3.13.9):
+
+```bash
+pip install -r requirements-lock.txt
+```
+
 If `statmorph` fails to build:
 
 ```bash
@@ -268,6 +275,20 @@ Apply mode and the field runner were not re-tested on the final model. Check `--
 first real download. GZH labels exist only for AEGIS, COSMOS, GEMS and GOODS, and CANDELS is used only for
 GOODS-South in this project.
 
+## Final model
+
+The final model is submitted as `pixels2provenance_final_2026-10-31.zip`. It is not stored in this repository, whose
+`.gitignore` excludes `models/`.
+
+| Tier | Contents |
+|---|---|
+| Tier 1, unsupervised | Quality and representation autoencoders, PCA and scalers, GMM, HDBSCAN, cluster names |
+| Tier 2, supervised | Fine-tuned ResNet-18 and EfficientNet-B0, physical and fusion XGBoost, merger XGBoost, calibration |
+
+To use it, unzip it into `models/`. `MODEL_README.md` inside the zip explains each file and how to apply the model to
+a new field. Loaded from the package, Tier 2 reproduced all 328 final test predictions exactly, and the GMM reproduced
+the cluster of all 43,015 sources.
+
 ## Outputs
 
 Each stage writes to its own folder in `outputs/`, which is not in the repository because of its size.
@@ -321,6 +342,7 @@ pixels2provenance/
 ├── run_pipeline.py          Runs the stages
 ├── config.yaml              All settings, including the split plan and label rules
 ├── requirements.txt         Python packages
+├── requirements-lock.txt    Exact package versions of the final run
 ├── test_split_ledger.json   Every evaluation of the test split
 ├── DEVELOPMENT_LOG.md       History of changes and their effect
 ├── report/                  Project report

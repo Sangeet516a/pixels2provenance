@@ -1,0 +1,18 @@
+# Exact versions used for the final run of 31 October 2026 (Python 3.13.9)
+astropy==8.0.2
+astroquery==0.4.11
+hdbscan==0.8.44
+joblib==1.6.0
+matplotlib==3.11.2
+numpy==2.5.4
+pandas==3.0.6
+photutils==3.1.1
+pillow==13.0.0
+PyYAML==6.0.3
+scikit-learn==1.9.1
+scipy==1.18.1
+statmorph==0.7.2
+threadpoolctl==3.7.0
+torch==2.14.1
+torchvision==0.29.1
+xgboost==3.4.1

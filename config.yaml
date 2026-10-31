@@ -308,7 +308,7 @@ supervised:
     tree_method: hist
     n_jobs: 4
   # ---- Stage 4b: FINAL MODEL = equal-weight average of these members' probabilities (then Stage 4c calibration) ----
-  ensemble_members:          # any of: resnet18_ft, efficientnet_b0_ft (fine-tuned CNNs), xgb_physical (14 physical
+  ensemble_members:          # any of: resnet18_ft, efficientnet_b0_ft (fine-tuned CNNs), xgb_physical (18 physical
     - resnet18_ft            # features), xgb_fusion (frozen CNN features + physical, the XGBoost above). All are
     - efficientnet_b0_ft     # cross-validated on the same 5 folds; ensemble_members.csv scores every combination.
     - xgb_physical           # 30 Oct experiment: this trio 0.51 Macro-F1 vs xgb_fusion alone 0.47 (out-of-fold)
